@@ -1,0 +1,87 @@
+<div class="mb-0 pb-0 bg-opacity-75;" style=" width: 100%; height: 100vh; position: sticky" *ngIf="loading">
+  <div class="spinner-border text-primary" style="margin-left: 50% !important; margin-top: 25% !important;"
+    role="status"></div>
+</div>
+<div class="card mb-0 pb-0" *ngIf="!loading">
+  <div class="card-header">
+    <h1 class="m-0 text-dark">{{getTitle()}}</h1>
+  </div>
+
+  <div class="card-body">
+    <form class="row" [formGroup]="registroForm">
+      <div class="container-fluid">
+
+        <div class="row mb-4">
+          <div class="col-8 inputs">
+            <mat-form-field appearance="fill">
+              <mat-label>DOCUMENTO</mat-label>
+              <input matInput placeholder="Documento" formControlName="documento" minlength="8" />
+              <!-- <mat-error><strong>{{ getError('documento') }}</strong></mat-error> -->
+            </mat-form-field>
+          </div>
+          <div class="col-2">
+            <button mat-button class="buttonn" matTooltip="Buscar" [disabled]="load" (click)="buscarTrabajador()">
+              <mat-icon>search</mat-icon>Buscar</button>
+          </div>
+          <div class="col-2">
+            <button mat-button class="buttonn" matTooltip="Guardar" [disabled]="registroForm.invalid" (click)="guardarRegistro()">
+              <mat-icon>save</mat-icon>Guardar</button>
+          </div>
+        </div>
+
+        <div class="mb-0 pb-0 bg-opacity-75;" style=" width: 100%; height: 100vh; position: sticky" *ngIf="load">
+          <div class="spinner-border text-primary" style="margin-left: 50% !important; margin-top: 25% !important;"
+            role="status"></div>
+        </div>
+        <div class="row mb-2" *ngIf="!load">
+          <div class="col-8 inputs">
+            <div class="row mb-2">
+              <div class="col-12 title">
+                {{ fechaActual }}
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-12 inputs">
+                <mat-form-field appearance="fill">
+                  <mat-label>NOMBRES</mat-label>
+                  <input matInput placeholder="Nombres" formControlName="nombres" type="text" />
+                  <mat-error><strong>{{ getError('nombres') }}</strong></mat-error>
+                </mat-form-field>
+              </div>              
+            </div>
+            <div class="row mb-2">
+              <div class="col-6 inputs">
+                <mat-form-field appearance="fill">
+                  <mat-label>Fecha de Nacimiento</mat-label>
+                  <input matInput [matDatepicker]="picker" placeholder="Fecha de Nacimiento"
+                    formControlName="f_nacimiento" />
+                  <mat-datepicker-toggle matIconSuffix [for]="picker">
+                    <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                  </mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                  <mat-error *ngFor="let val of validations.f_nacimiento"><strong>{{ val.message
+                      }}</strong></mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-6 inputs">
+                <mat-form-field appearance="fill">
+                  <mat-select placeholder="T. de Marcación" formControlName="idTipo">
+                    <!-- <mat-option value="-1">--SELECCIONE--</mat-option> -->
+                    <mat-option *ngFor="let item of listTipoMarcacion" value="{{ item.codigo }}">{{
+                      item.descripcion }}</mat-option>
+                  </mat-select>
+                  <!-- <mat-error><strong>{{ getError('idTipo') }}</strong></mat-error> -->
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="col-4 inputs ">
+            <mat-card class="example-card">
+              <img mat-card-image [src]="imageBase64" alt="Foto Trabajador" style="height: 250px" />
+            </mat-card>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

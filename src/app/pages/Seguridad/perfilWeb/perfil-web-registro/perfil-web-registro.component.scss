@@ -1,0 +1,112 @@
+.inputs {
+    font-size: 14px;
+}
+.inputs mat-error {
+    font-size: 11px;
+}
+.mat-mdc-radio-button ~ .mat-mdc-radio-button {
+    margin-left: 16px;
+}
+
+mat-form-field {
+    width: 100%;
+}
+
+mat-hint {
+    font-size: 10px;
+}
+
+.filter input {
+    font-size: 11px;
+}
+
+.example-card-user {
+    height: 225px !important;
+    width: 85% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    margin: auto !important;
+}
+
+.badge-p {
+    font-size: 15px;
+    font-family: Calibri;
+    // width: 60PX;
+    color: #ffffff;
+}
+
+.avatar-user {
+    display: inline-block;
+    overflow: hidden;
+    line-height: 1;
+    vertical-align: middle;
+    border-radius: 50% !important;
+    height: 200px !important;
+    width: 200px !important;
+    border-style: none !important;
+    margin-top: 25px !important;
+}
+
+.image-upload > input {
+    display: none !important;
+}
+
+.image-upload img {
+    width: 30px !important;
+    cursor: pointer !important;
+    margin: 2px 1px !important;
+}
+
+.image-upload label {
+    background: #5d78ff !important;
+    width: 45px;
+    height: 45px;
+    padding: 4px 6px;
+    border-radius: 50% !important;
+    margin: -100px 60px 60px 250px !important;
+    z-index: 10 !important;
+}
+
+.mat-form-field {
+    // margin-left: 0px;
+    font-size: 14px;
+    width: 100%;
+}
+
+.example-container {
+    display: flex;
+    flex-direction: column;
+    min-width: 300px;
+}
+
+table {
+    width: 100%;
+}
+
+td,
+th {
+    // width: 25%;
+    align-items: center;
+    text-align: center;
+}
+
+.example-section {
+    margin: 12px 0;
+}
+
+.example-margin {
+    margin: 0 12px;
+}
+
+ul {
+    list-style-type: none;
+    margin-top: 4px;
+}
+.padding-form-group {
+    padding: 10px 0px 0px 5px;
+}
+
+.padding-remove {
+    padding: 0px;
+}

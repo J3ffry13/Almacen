@@ -1,0 +1,107 @@
+<div *ngIf="loading">
+  <!-- <app-loader></app-loader> -->
+</div>
+<div *ngIf="!loading">
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0 text-dark">Reporte Horas</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+            <li class="breadcrumb-item active">Reporte Horas</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="loadingData">
+    <section class="content mb-4">
+      <div class="container-fluid">
+        <div class="card " style="color: rgb(22, 105, 206); ">
+          <div class="d-flex justify-content-center" style="text-align: center;">
+            <div class="spinner-border mt-4 mb-4" role="status"></div>
+            <div class="mt-auto mb-auto" style="margin-left: 10px; ">
+              Cargando Información ...
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div *ngIf="!loadingData">
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row ml-2 mb-4">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-3">
+                <form [formGroup]="formGroupFiltros">
+                  <mat-form-field appearance="fill">
+                    <mat-select placeholder="Semana" formControlName="semanaID">
+                      <mat-option value="-1">--SELECCIONE--</mat-option>
+                      <mat-option *ngFor="let item of listSemanasCbo" value="{{ item.codigo }}">{{
+                        item.descr }}</mat-option>
+                    </mat-select>
+                    <mat-hint align="start"><strong>Filtro</strong> Semana</mat-hint>
+                  </mat-form-field>
+                </form>
+              </div>
+              <div class="col-3">
+                <mat-form-field appearance="fill">
+                  <input matInput placeholder="Fitrado Rápido" (keyup)="applyFilterGlobal($event.target['value'])"
+                    [disabled]="listadoResult.length === 0" />
+                  <mat-hint>Filtrado Rápido</mat-hint>
+                </mat-form-field>
+              </div>
+
+              <div class="col-4 mb-auto mt-auto ml-auto" align="end">
+                <button [hidden]="listadoResult.length === 0" mat-raised-button
+                  style="background-color: rgb(28, 157, 56); color: #fff;" matTooltip="Exportar"
+                  (click)="exportarDatos()" [disabled]="listadoResult.length === 0">
+                  <mat-icon>cloud_download</mat-icon>
+                  Descargar</button>
+                &nbsp;
+                <button mat-raised-button style="color: #000;" matTooltip="Buscar" (click)="cargarListaDatos()">
+                  <mat-icon>search</mat-icon>
+                  Buscar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="listadoResult.length === 0;">
+          <div class="col-sm-12">
+            <div class="card">
+              <div class="card-body" style="text-align: center;">
+                No hay Resultados...
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="listadoResult.length !== 0;">
+          <div class="col-sm-12">
+            <div class="mat-elevation-z8">
+              <table mat-table [dataSource]="dataSource" matSort>
+                <ng-container *ngFor="let column of customColumns; let colIndex = index"
+                  matColumnDef="{{ column.name }}">
+                  <th mat-header-cell *matHeaderCellDef>{{ column.label }} </th>
+                  <td mat-cell *matCellDef="let element">{{ element[column.name] }}</td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+
+              <mat-paginator [pageSizeOptions]="pageSizeOptions" [showFirstLastButtons]="true"  [length]="listadoResult.length">
+              </mat-paginator>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>

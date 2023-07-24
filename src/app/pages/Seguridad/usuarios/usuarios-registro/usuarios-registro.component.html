@@ -1,0 +1,71 @@
+<div class="card mb-0 pb-0" style="width: 50px;" *ngIf="loading">
+    <div class="text-center">
+        <div class="spinner-border text-primary" role="status">
+        </div>
+    </div>
+</div>
+<div class="card mb-0 pb-0" *ngIf="!loading">
+    <div class="card-header">
+        <h2 class="card-title">{{getTitle()}}</h2>
+    </div>
+
+    <div class="card-body">
+        <form class="row" [formGroup]="registroForm">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-3 inputs ">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Dni</mat-label>
+                            <input type="text" matInput placeholder="Dni" formControlName="dni"
+                                [matAutocomplete]="auto">
+                            <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption>
+                                <mat-option *ngFor="let option of FilteredlistUsuarios | async" [value]="option.dni"
+                                    (onSelectionChange)="getPersona($event)"> {{
+                                    option.dni }} </mat-option>
+                            </mat-autocomplete>
+                            <mat-error><strong>{{ getError('dni') }}</strong></mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-9 inputs" >
+                        <mat-form-field appearance="fill">
+                            <mat-label>Nombre</mat-label>
+                            <input matInput placeholder="Nombre" formControlName="nombre" minlength="3"
+                                [readonly]="true" />
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-4 inputs">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Usuario</mat-label>
+                            <input matInput placeholder="Usuario" formControlName="usuario" minlength="3"
+                                [readonly]="true" />
+                        </mat-form-field>
+                    </div>
+                    <div class="col-4 inputs">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Contraseña</mat-label>
+                            <input matInput type="password" placeholder="Contraseña" formControlName="password" minlength="3" />
+                        </mat-form-field>
+                    </div>
+                    <div class="col-4 inputs ">
+                        <mat-form-field appearance="fill">
+                            <mat-select placeholder="Perfil Web" formControlName="idPerfilWeb">
+                                <mat-option *ngFor="let item of listPerfilesWebCbo" value="{{ item.codigo }}">{{
+                                    item.descripcion }}</mat-option>
+                            </mat-select>
+                            <mat-error><strong>{{ getError('idPerfilWeb') }}</strong></mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="card-footer m-0" align="end">
+        <button mat-button (click)="onNoClick()" matTooltip="Cancelar"
+            style="background-color: rgb(206, 206, 206);">Cancel</button>
+        <button mat-button color="primary" style="background-color: rgb(255, 255, 255);margin-left: 10px;"
+            matTooltip="Guardar" [disabled]="registroForm.invalid" (click)="guardarRegistro()">Guardar</button>
+    </div>
+
+</div>

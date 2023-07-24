@@ -1,0 +1,66 @@
+<div class="card mb-0 pb-0" style="width: 50px;" *ngIf="loading">
+    <div class="text-center">
+        <div class="spinner-border text-primary" role="status">
+        </div>
+      </div>
+</div>
+<div class="card mb-0 pb-0" *ngIf="!loading">
+        <div class="card-header">
+            <h2 class="card-title">{{getTitle()}}</h2>
+        </div>
+        
+        <div class="card-body">
+            <form class="row"  [formGroup]="registroForm">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-4 inputs ">
+                            <mat-form-field appearance="fill">
+                                <mat-select placeholder="T. de Contrato" formControlName="tipoID">
+                                    <mat-option value="-1">--SELECCIONE--</mat-option>
+                                    <mat-option *ngFor="let item of listTipoContcbo" value="{{ item.codigo }}">{{
+                                        item.descr }}</mat-option>
+                                </mat-select>
+                                <mat-error><strong>{{ getError('tipoID') }}</strong></mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-4 inputs">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Fecha de Inicio</mat-label>
+                                <input matInput [matDatepicker]="picker" placeholder="Fecha de Inicio"
+                                    formControlName="f_inicio" />
+                                <mat-datepicker-toggle matIconSuffix [for]="picker">
+                                    <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                                </mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                                <mat-error *ngFor="let val of validations.f_inicio"><strong>{{ val.message
+                                        }}</strong></mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-4 inputs">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Fecha de Fin</mat-label>
+                                <input matInput [matDatepicker]="pickerf" placeholder="Fecha de Fin"
+                                    formControlName="f_fin" />
+                                <mat-datepicker-toggle matIconSuffix [for]="pickerf">
+                                    <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                                </mat-datepicker-toggle>
+                                <mat-datepicker #pickerf></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>                    
+                </div>
+            </form>
+            <div class="row ">
+                <div class="col-12 inputs input-group">
+                    <input class="form-control" placeholder="Cargar Archivo" type="file" (change)="uploadData($event)"/>   
+                    </div>                
+            </div>
+        </div>
+        <div class="card-footer m-0" align="end">
+                <button mat-button (click)="onNoClick()" matTooltip="Cancelar" style="background-color: rgb(206, 206, 206);">Cancel</button>
+                <button mat-button color="primary" style="background-color: rgb(255, 255, 255);margin-left: 10px;" matTooltip="Guardar"
+                [mat-dialog-close]="guardarRegistro()" (click)="SubeArhivo()"
+                [disabled]="registroForm.invalid" >Guardar</button>
+        </div>
+            
+    </div>

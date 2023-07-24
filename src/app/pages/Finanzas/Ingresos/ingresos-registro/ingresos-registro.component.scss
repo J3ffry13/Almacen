@@ -1,0 +1,44 @@
+.inputs {
+    font-size: 14px;
+}
+.inputs mat-error {
+    font-size: 11px;
+}
+.mat-mdc-radio-button ~ .mat-mdc-radio-button {
+    margin-left: 16px;
+}
+
+mat-form-field {
+	width: 100%;
+}
+
+mat-hint {
+	font-size: 10px;
+}
+
+.badge-p {
+    font-size: 15px; 
+    font-family: Calibri; 
+    // width: 60PX;
+    color: #ffffff; 
+}
+
+.mat-form-field {
+	// margin-left: 0px;
+	font-size: 14px;
+  	width: 100%;
+}
+
+.example-container {
+	display: flex;
+	flex-direction: column;
+	min-width: 300px;
+}
+
+.padding-form-group {
+	padding: 10px 0px 0px 5px;
+}
+
+.padding-remove {
+	padding: 0px;
+}

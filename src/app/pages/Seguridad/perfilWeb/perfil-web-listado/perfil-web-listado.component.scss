@@ -1,0 +1,44 @@
+table {
+    width: 100%;
+    // overflow: auto !important;
+    // overflow-x: auto !important;
+}
+
+td,
+th {
+    // width: 25%;
+    align-items: center;
+    text-align: center;
+    overflow: auto !important;
+    overflow-x: auto !important;
+}
+
+.example-container {
+    display: flex;
+    flex-direction: column;
+    // min-width: 300px;
+  }
+
+.inputs {
+    font-size: 14px;
+}
+button {
+    padding: 20px;
+    font-size: 20px;
+}
+.badge-p {
+    font-size: 15px; 
+    font-family: Calibri; 
+    // width: 60PX;
+    color: #ffffff; 
+}
+mat-form-field {
+	width: 100%;
+}
+
+::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
+    background-color: #fff;
+}
+mat-hint {
+    font-size: 12px;
+}

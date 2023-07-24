@@ -1,0 +1,157 @@
+<div *ngIf="loading">
+  <!-- <app-loader></app-loader> -->
+</div>
+<div *ngIf="!loading">
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0 text-dark">Ingresos</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+            <li class="breadcrumb-item active">Ingresos</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="loadingData">
+    <section class="content mb-4">
+      <div class="container-fluid">
+        <div class="card " style="color: rgb(22, 105, 206); ">
+          <div class="d-flex justify-content-center" style="text-align: center;">
+            <div class="spinner-border mt-4 mb-4" role="status"></div>
+            <div class="mt-auto mb-auto" style="margin-left: 10px; ">
+              Cargando Información ...
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div *ngIf="!loadingData">
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row ml-2 mb-4">
+          <div class="col-12">
+            <div class="row">
+              <div class="col-4">
+                <form [formGroup]="formGroupFiltros">
+                  <div class="row">
+                    <div class="col-6">
+                      <mat-form-field appearance="fill">
+                        <mat-label>Fecha Inicio</mat-label>
+                        <input matInput [matDatepicker]="pickerIni" placeholder="Fecha Inicio"
+                          formControlName="fechaIni" [max]="maxDate" />
+                        <mat-datepicker-toggle matIconSuffix [for]="pickerIni">
+                          <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                        </mat-datepicker-toggle>
+                        <mat-datepicker #pickerIni></mat-datepicker>
+                        <mat-hint><strong>Filtro</strong> Fecha Inicio</mat-hint>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-6">
+                      <mat-form-field appearance="fill">
+                        <mat-label>Fecha Fin</mat-label>
+                        <input matInput [matDatepicker]="pickerFin" placeholder="Fecha Fin" formControlName="fechaFin"
+                          [max]="maxDate" />
+                        <mat-datepicker-toggle matIconSuffix [for]="pickerFin">
+                          <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                        </mat-datepicker-toggle>
+                        <mat-datepicker #pickerFin></mat-datepicker>
+                        <mat-hint><strong>Filtro</strong> Fecha Fin</mat-hint>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="col-2" align="start">
+                <div class="row inputs">
+                  <mat-form-field appearance="fill">
+                    <input matInput placeholder="Fitrado Rápido" (keyup)="applyFilterGlobal($event.target['value'])"
+                      [disabled]="listadoResult.length === 0" />
+                    <mat-hint>Filtrado Rápido</mat-hint>
+                  </mat-form-field>
+                </div>
+              </div>
+
+
+              <div class="col-6 mb-auto mt-auto ml-auto" align="end">
+                <button [hidden]="listadoResult.length === 0" mat-raised-button
+                  style="background-color: rgb(28, 157, 56); color: #fff;" matTooltip="Exportar"
+                  (click)="exportarDatos()" [disabled]="listadoResult.length === 0">
+                  <mat-icon>cloud_download</mat-icon>
+                  Descargar</button>
+                &nbsp;
+                <button mat-raised-button style="color: #000;" matTooltip="Buscar" (click)="cargarListaDatos()">
+                  <mat-icon>search</mat-icon>
+                  Buscar</button>
+                &nbsp;
+                <button mat-raised-button color="primary" matTooltip="Nuevo Ingreso" (click)="nuevo()">
+                  <mat-icon>add_circle</mat-icon>
+                  Nuevo</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="listadoResult.length === 0;">
+          <div class="col-sm-12">
+            <div class="card">
+              <div class="card-body" style="text-align: center;">
+                No hay Resultados...
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="listadoResult.length !== 0;">
+          <div class="col-sm-12">
+            <div
+              style="background-color: rgb(231, 231, 231); border-radius: 10px;align-items: center;text-align: center; width: 100%; height: 350px; margin-bottom: 20px;">
+              <highcharts-chart id="columOptionsTrabjadores" [Highcharts]="highcharts" [options]="chartOptionsIngresos"
+                [callbackFunction]="chartCallback" [(update)]="updateFromInput" [oneToOne]="true"
+                style="width: 100%; height: 100%; display: block;margin: auto;">
+              </highcharts-chart>
+            </div>
+          </div>
+          <div class="col-sm-12">
+            <div class="example-container mat-elevation-z8">
+              <table mat-table [dataSource]="dataSource" matSort>
+                <ng-container *ngFor="let column of customColumns; let colIndex = index"
+                  matColumnDef="{{ column.name }}">
+                  <th mat-header-cell *matHeaderCellDef>{{ column.label }} </th>
+                  <ng-container *matCellDef="let element">
+                    <ng-container *ngIf="column.name !== 'actions'; else colActions">
+                      <ng-container *ngIf="!column.esFlag">
+                        <td mat-cell>{{ element[column.name] }}</td>
+                      </ng-container>
+                    </ng-container>
+                    <ng-template #colActions>
+                      <td mat-cell>
+                        <button mat-icon-button color="primary" matTooltip="Editar registro" (click)="edit(element)">
+                          <mat-icon>create</mat-icon>
+                        </button>
+                        <button mat-icon-button color="warn" matTooltip="Anular registro" (click)="delete(element)">
+                          <mat-icon>delete</mat-icon>
+                        </button>
+                      </td>
+                    </ng-template>
+                  </ng-container>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+
+              <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons [length]="listadoResult.length">
+              </mat-paginator>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>

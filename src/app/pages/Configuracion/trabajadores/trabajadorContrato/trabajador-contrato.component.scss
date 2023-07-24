@@ -1,0 +1,12 @@
+.inputs {
+    font-size: 14px;
+}
+mat-form-field {
+	width: 100%;
+}
+.inputs mat-error {
+    font-size: 11px;
+}
+.mat-mdc-radio-button ~ .mat-mdc-radio-button {
+    margin-left: 16px;
+  }

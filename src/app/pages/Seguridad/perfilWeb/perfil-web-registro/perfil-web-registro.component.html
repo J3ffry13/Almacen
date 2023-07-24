@@ -1,0 +1,75 @@
+<div class="mb-0 pb-0 bg-opacity-75;" style=" width: 100%; height: 100vh; position: sticky" *ngIf="loading">
+  <div class="spinner-border text-primary" style="margin-left: 50% !important; margin-top: 25% !important;"
+    role="status"></div>
+</div>
+<div class="card mb-0 pb-0" *ngIf="!loading">
+  <div>
+    <div class="card-header">
+      <h2 class="card-title">{{getTitle()}}</h2>
+      <div align="end">
+        <button mat-button matTooltip="Regresar" [routerLink]="['../webprofiles']"
+          style="background-color: rgb(206, 206, 206);">Regresar</button>
+        <button mat-button color="primary"
+          style="background-color: rgb(255, 255, 255);margin-left: 10px;" matTooltip="Guardar"
+          [disabled]="registroForm.invalid" (click)="guardarRegistro()">Guardar</button>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <form class="row" [formGroup]="registroForm">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-10 inputs">
+              <mat-form-field appearance="fill">
+                <mat-label>DESCRIPCION</mat-label>
+                <input matInput placeholder="Descripción" formControlName="descripcion" type="text" />
+                <mat-error><strong>{{ getError('descripcion') }}</strong></mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div>
+    <div class="card-header">
+      <h2 class="card-title">PERFILES</h2>
+    </div>
+    <div class="card-body">
+      <div class="row" style="gap: 2%;">
+        <div style="background-color: rgb(212, 212, 212); border-radius: 10px; width: 48%;">
+          <h2 class="my-2" style="text-align: center;">Todos los perfiles</h2>
+          <section class="example-section ml-2" *ngFor="let task of listadoAll" >
+            <span class="example-list-section"><strong>{{task.name}}</strong></span>
+            <span class="example-list-section">
+              <ul>
+                <li *ngFor="let subtask of task.subtasks">
+                  <mat-checkbox color="primary" [(ngModel)]="subtask.completed">
+                    {{subtask.descripcion}}
+                  </mat-checkbox>
+                </li>
+              </ul>
+            </span>
+          </section>
+        </div>
+        <div style="background-color: rgb(212, 212, 212); border-radius: 10px; width: 48%;">
+          <h2 class="my-2" style="text-align: center;">Perfiles Seleccionados</h2>
+          <section class="example-section ml-2" *ngFor="let task of listadoAll">
+            <span class="example-list-section"><strong>{{task.name}}</strong></span>
+            <span class="example-list-section">
+              <ul>
+                <li *ngFor="let subtask of task.subtasks">
+                  <span *ngIf="subtask.completed"><strong><mat-icon>check</mat-icon> 
+                      {{subtask.descripcion}}
+                    </strong></span>
+                </li>
+              </ul>
+            </span>
+          </section>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>

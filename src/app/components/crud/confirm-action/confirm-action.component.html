@@ -1,0 +1,12 @@
+<div class="card personalizacion mb-0 pb-0">
+    <div class="card-header mb-0">
+        <h2 class="card-title">{{data.type}}</h2>
+    </div>
+    <div class="card-body mb-0">
+        <p>{{data.question}}</p>
+    </div>
+    <div class="card-footer mb-0" align="end">
+        <button mat-button (click)="onNoClick()" matTooltip="Cancelar">Cancel</button>
+        <button mat-button mat-dialog-close="ok" cdkFocusInitial matTooltip="Aceptar" color="primary">Aceptar</button>
+    </div>
+</div>

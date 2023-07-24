@@ -1,0 +1,84 @@
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$adminlte-primary: mat.define-palette(mat.$indigo-palette);
+$adminlte-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$adminlte-warn: mat.define-palette(mat.$red-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$adminlte-theme: mat.define-light-theme((
+  color: (
+    primary: $adminlte-primary,
+    accent: $adminlte-accent,
+    warn: $adminlte-warn,
+  )
+));
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($adminlte-theme);
+
+/* You can add global styles to this file, and also import other style files */
+// @import '~bootstrap/scss/bootstrap';
+
+/* Importing Bootstrap SCSS file. */
+// @import '~bootstrap/scss/bootstrap';
+
+@import url('https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.3.0/css/flag-icon.min.css');
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700');
+@import url('https://unpkg.com/leaflet@1.9.4/dist/leaflet.css');
+
+@import '~admin-lte/plugins/fontawesome-free/css/all.min.css';
+@import '~admin-lte/plugins/icheck-bootstrap/icheck-bootstrap.min.css';
+@import '~admin-lte/dist/css/adminlte.min.css';
+
+@import 'ngx-toastr/toastr';
+
+body {
+    width: 100vw;
+    height: 100vh;
+}
+
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
+
+.content {
+    padding: 0 0.5rem;
+}
+
+// Sidebar menu animation
+// Needed for open/close menu animation for menus with child nodes
+.nav .nav-item:not(.menu-open) > .ng-trigger-openClose,
+.nav .nav-item > .ng-trigger-openClose.ng-animating {
+    overflow: hidden;
+    display: block;
+}
+
+// Override original AdminLTE transform
+.nav-sidebar .menu-is-opening > .nav-link i.right,
+.nav-sidebar .menu-is-opening > .nav-link svg.right,
+.nav-sidebar .menu-open > .nav-link i.right,
+.nav-sidebar .menu-open > .nav-link svg.right {
+    transform: none;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

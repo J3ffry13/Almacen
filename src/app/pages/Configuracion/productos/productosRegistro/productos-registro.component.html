@@ -1,0 +1,60 @@
+<div class="card mb-0 pb-0" *ngIf="loading">
+    <div class="text-center">
+        <div class="spinner-border text-primary" role="status">
+        </div>
+    </div>
+</div>
+<div class="card mb-0 pb-0" *ngIf="!loading">
+    <div class="card-header">
+        <h2 class="card-title">{{getTitle()}}</h2>
+    </div>
+    <div class="card-body" style="width: 800px;">
+        <form class="row" [formGroup]="registroForm">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-3 inputs ">
+                        <mat-form-field appearance="fill">
+                            <input matInput placeholder="Código" formControlName="codigo" minlength="2" maxlength="10"
+                                type="text" />
+                            <mat-error><strong>{{ getError('codigo') }}</strong></mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-5 inputs">
+                        <mat-form-field appearance="fill">
+                            <input matInput placeholder="Nombre" formControlName="nombre" maxlength="100" />
+                            <mat-error><strong>{{ getError('nombre') }}</strong></mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-2 inputs">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Stock</mat-label>
+                            <input matInput placeholder="Stock" formControlName="stock" type="number" />
+                            <mat-error><strong>{{ getError('stock') }}</strong></mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-2 inputs">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Precio</mat-label>
+                            <input matInput placeholder="Precio" formControlName="precio" type="number" />
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-12 inputs ">
+                        <mat-form-field appearance="fill">
+                            <input matInput placeholder="Descripcion" formControlName="descripcion" type="text" />
+                            <mat-error><strong>{{ getError('descripcion') }}</strong></mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="card-footer m-0" align="end">
+        <button mat-button (click)="onNoClick()" matTooltip="Cancelar"
+            style="background-color: rgb(206, 206, 206);">Cancel</button>
+        <button mat-button color="primary" style="background-color: rgb(255, 255, 255);margin-left: 10px;"
+            matTooltip="Guardar" [disabled]="registroForm.invalid" (click)="guardarRegistro()">Guardar</button>
+    </div>
+
+</div>
