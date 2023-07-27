@@ -1,5 +1,4 @@
-import {Component, ViewChild, ChangeDetectorRef, OnInit,
-    AfterViewInit} from '@angular/core';
+import {Component, ViewChild, ChangeDetectorRef, OnInit} from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
@@ -9,71 +8,56 @@ import {MatDialog} from '@angular/material/dialog';
 import {CurrentUser} from '@/Models/auth/auth.model';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {SnackbarComponent} from '@components/crud/snackbar/snackbar.component';
-import { TrabajadoresService } from '@services/configuracion/trabajadores.service';
-import { PersonaModel } from '@/Models/configuracion/PersonaModel.model';
-import { Router } from '@angular/router';
-import { UtilsService } from '@services/utils/utils.service';
-import { LoginService } from '@services/auth/login.service';
-import { ConfirmActionComponent } from '@components/crud/confirm-action/confirm-action.component';
+import {TrabajadorService} from '@services/configuracion/trabajadores.service';
+import {UtilsService} from '@services/utils/utils.service';
+import {LoginService} from '@services/auth/login.service';
+import {ConfirmActionComponent} from '@components/crud/confirm-action/confirm-action.component';
+import {TrabajadorModel} from '@/Models/configuracion/TrabajadorModel.model';
+import {TrabajadoresRegistroComponent} from '../trabajadoresRegistro/trabajadores-registro.component';
 
 @Component({
     selector: 'app-trabajadores-listado',
     templateUrl: './trabajadores-listado.component.html',
     styleUrls: ['./trabajadores-listado.component.scss']
 })
-export class TrabajadoresListadoComponent implements OnInit, AfterViewInit {
+export class TrabajadoresListadoComponent implements OnInit {
     displayedColumns: string[] = [];
     dataSource: MatTableDataSource<any>;
-    listadoResult: any[] = [];
+    listadoResult: TrabajadorModel[] = [];
     listTipoDoccbo: any[] = [];
     listTipoContcbo: any[] = [];
     customColumns: any[] = [];
     loading = false;
     loadingData = false;
-    user: CurrentUser;
+    user = new CurrentUser();
     formGroupFiltros: FormGroup;
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
 
     constructor(
         public ref: ChangeDetectorRef,
-        public trabajadorService: TrabajadoresService,
+        public trabajadorService: TrabajadorService,
         public loginService: LoginService,
-        public router: Router,
         public excelService: ExcelService,
         public dialog: MatDialog,
         public utilsService: UtilsService,
         public _snackBar: MatSnackBar,
-        public formBuilder: FormBuilder,
+        public formBuilder: FormBuilder
     ) {}
 
-    ngOnInit() {
+    async ngOnInit() {
         this.loading = true;
-        // this.user.email = this.loginService.getUser();
-        // // this.user = this.loginService.getTokenDecoded();
+        this.user.email = await this.loginService.getUser();
         this.createFrom();
         this.renderColumns();
-        // this.cargarListaDatos();
-    }
-
-    ngAfterViewInit(): void {
-        // this.utilsService.listadoCombos$({opcion: 1}).subscribe(
-        //     (result) => {
-        //         this.listTipoDoccbo = result[0];
-        //         this.listTipoContcbo = result[1];
-        //         this.cargarListaDatos();
-        //     },
-        //     (error) => {
-        //         console.log(error);
-        //     }
-        // );
+        this.cargarListaDatos();
     }
 
     createFrom() {
         this.formGroupFiltros = this.formBuilder.group({
-          dni: new FormControl(null),
+            dni: new FormControl(null)
         });
-      }
+    }
 
     refreshLista() {
         this.dataSource = new MatTableDataSource(this.listadoResult);
@@ -86,46 +70,43 @@ export class TrabajadoresListadoComponent implements OnInit, AfterViewInit {
     cargarListaDatos() {
         this.loadingData = true;
         this.trabajadorService
-            .listarRegistros$({
-                dni: this.formGroupFiltros.value.dni == null ? '' : this.formGroupFiltros.value.dni,
-            })
+            .listarTrabajador(
+                this.formGroupFiltros.value.dni == null ? 1 : 0,
+                this.formGroupFiltros.value.dni == null
+                    ? ''
+                    : this.formGroupFiltros.value.dni
+            )
             .subscribe((result) => {
-                this.listadoResult = JSON.parse(JSON.stringify(result));
+                this.listadoResult = [];
+                result.forEach((element) => {
+                    this.listadoResult.push({
+                        idTrabajador: element.payload.doc.id,
+                        ...element.payload.doc.data()
+                    });
+                });
                 this.refreshLista();
                 this.loading = false;
                 this.loadingData = false;
             });
-        this.loadingData = false;
     }
 
     nuevo() {
-        const registro = new PersonaModel();
+        const registro = new TrabajadorModel();
         registro.clean();
-        this.router.navigate(['masters/workers-reg'], {
-            state: {
-                param: registro,
-                listTipoContcbo: this.listTipoContcbo,
-                listTipoDoccbo: this.listTipoDoccbo,
-            }
-        });
+        this.openDialog(registro, 1);
     }
 
-    edit(registro: PersonaModel) {
-        this.router.navigate(['masters/workers-reg'], {
-            state: {
-                param: registro,
-                listTipoContcbo: this.listTipoContcbo,
-                listTipoDoccbo: this.listTipoDoccbo,
-            }
-        });
+    edit(registro: TrabajadorModel) {
+        this.openDialog(registro, 2);
     }
 
     delete(registro: any) {
-        let registroDatos: PersonaModel = new PersonaModel();
+        let registroDatos: TrabajadorModel = new TrabajadorModel();
         registroDatos.clean();
-        registroDatos.idPersona = registro.idPersona;
-        registroDatos.accion = 3;
-        // registroDatos.login = this.user.email
+        registroDatos = registro;
+        registroDatos.status = false;
+        registroDatos.login_up = this.user.email;
+
         const dialogRef = this.dialog.open(ConfirmActionComponent, {
             data: {
                 type: 'Eliminar Registro',
@@ -135,16 +116,29 @@ export class TrabajadoresListadoComponent implements OnInit, AfterViewInit {
         dialogRef.afterClosed().subscribe((result) => {
             if (result == 'ok' && result != undefined) {
                 this.trabajadorService
-                    .elimina_Trabajadores$({
+                    .editar_Trabajador(
+                        registroDatos.idTrabajador,
                         registroDatos
-                    })
-                    .subscribe((result) => {
-                        let message = result[0];
+                    )
+                    .then(() => {
+                        let message = 'Trabajador Eliminado con Éxito';
                         this._snackBar.openFromComponent(SnackbarComponent, {
                             duration: 3 * 1000,
                             data: message['']
                         });
                     });
+                this.cargarListaDatos();
+            }
+        });
+    }
+
+    openDialog(registro: TrabajadorModel, accion: number) {
+        const dialogRef = this.dialog.open(TrabajadoresRegistroComponent, {
+            data: {registro, accion}
+        });
+
+        dialogRef.afterClosed().subscribe((result) => {
+            if (result) {
                 this.cargarListaDatos();
             }
         });
@@ -169,7 +163,7 @@ export class TrabajadoresListadoComponent implements OnInit, AfterViewInit {
                 label: 'T. DOCUMENTO',
                 esFlag: false,
                 width: 'mat-column'
-            },    
+            },
             {
                 name: 'dni',
                 label: 'DOCUMENTO',
@@ -181,13 +175,13 @@ export class TrabajadoresListadoComponent implements OnInit, AfterViewInit {
                 label: 'NOMBRES',
                 esFlag: false,
                 width: 'mat-column mat-column-120 center-cell'
-            },  
-             {
+            },
+            {
                 name: 'apellidos',
                 label: 'APELLIDOS',
                 esFlag: false,
                 width: 'mat-column mat-column-120 center-cell'
-            },      
+            },
             {
                 name: 'f_nacimiento',
                 label: 'F. NACIMIENTO',
@@ -212,7 +206,7 @@ export class TrabajadoresListadoComponent implements OnInit, AfterViewInit {
         );
     }
 
-    getItemByHtml(nume: number){
+    getItemByHtml(nume: number) {
         switch (nume) {
             case 1:
                 return 'ACTIVO';
@@ -223,12 +217,12 @@ export class TrabajadoresListadoComponent implements OnInit, AfterViewInit {
         }
     }
 
-     getItemByScss(nume: number){
-        if (nume == 1) return 'background-color: green'
-        else if (nume == 2) return 'background-color: red'
-        else return 'background-color: #b0a700'
+    getItemByScss(nume: number) {
+        if (nume == 1) return 'background-color: green';
+        else if (nume == 2) return 'background-color: red';
+        else return 'background-color: #b0a700';
     }
-    
+
     exportarDatos() {
         this.asyncAction(this.listadoResult)
             .then(() => {
@@ -241,9 +235,13 @@ export class TrabajadoresListadoComponent implements OnInit, AfterViewInit {
 
     asyncAction(listaDatos: any[]) {
         let data = listaDatos;
-        data.forEach(r => {
-            r['estado'] == 1 ? r['estado'] = 'ACTIVO' :  r['estado'] == 2 ? r['estado'] = 'CESADO' : r['estado'] = 'SIN CONTRATO'
-        })        
+        data.forEach((r) => {
+            r['estado'] == 1
+                ? (r['estado'] = 'ACTIVO')
+                : r['estado'] == 2
+                ? (r['estado'] = 'CESADO')
+                : (r['estado'] = 'SIN CONTRATO');
+        });
         const promise = new Promise((resolve, reject) => {
             try {
                 setTimeout(() => {
@@ -255,9 +253,7 @@ export class TrabajadoresListadoComponent implements OnInit, AfterViewInit {
                         'LISTADO DE TRABAJADORES',
                         'DATA',
                         this.customColumns.filter(
-                            (f) =>
-                                f.name !== 'actions' &&
-                                f.name !== 'select'
+                            (f) => f.name !== 'actions' && f.name !== 'select'
                         ),
                         data,
                         columnsSize,
@@ -265,9 +261,13 @@ export class TrabajadoresListadoComponent implements OnInit, AfterViewInit {
                         true
                     );
                 }, 0);
-                data.forEach(r => {
-                    r['estado'] == 'ACTIVO' ? r['estado'] = 1:  r['estado'] == 'CESADO' ? r['estado'] = 2 : r['estado'] = 3
-                })    
+                data.forEach((r) => {
+                    r['estado'] == 'ACTIVO'
+                        ? (r['estado'] = 1)
+                        : r['estado'] == 'CESADO'
+                        ? (r['estado'] = 2)
+                        : (r['estado'] = 3);
+                });
             } catch (e) {
                 reject(e);
             }

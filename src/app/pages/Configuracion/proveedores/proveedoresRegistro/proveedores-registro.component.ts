@@ -111,7 +111,6 @@ export class ProveedoresRegistroComponent implements OnInit {
                 console.log(error);
             });
         }
-       
     }
 
     onNoClick(): void {

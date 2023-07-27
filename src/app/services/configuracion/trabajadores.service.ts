@@ -1,28 +1,30 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { environment } from 'environments/environment';
+import {Injectable} from '@angular/core';
+import {AngularFirestore} from '@angular/fire/compat/firestore';
+import {environment} from 'environments/environment';
 
-import { Observable } from 'rxjs';
+import {Observable} from 'rxjs';
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root'
 })
-export class TrabajadoresService {
-  private headers: HttpHeaders;
-    myAppUrl: string;
-    myApiUrl: string;
-  
-    constructor(private http: HttpClient) {
-      this.myAppUrl = environment.endpoint;
-      this.myApiUrl = '/api/configuracion';
+export class TrabajadorService {
+    coleccion = environment.firebaseConfig.collectTrabajadores;
+
+    constructor(private firestore: AngularFirestore) {}
+
+    public listarTrabajador(accion: number, dni: string): Observable<any> {
+        return this.firestore
+            .collection(this.coleccion, (ref) =>
+                ref.where('status', '==', true).where('dni', accion == 0 ? '==' : '!=', dni)
+            )
+            .snapshotChanges();
     }
 
-  public listarRegistros$ = (datos: any): Observable<any> =>
-    this.http.post(this.myAppUrl + this.myApiUrl + '/listarPersonasTrabajadores', datos);
-  public obtenerContratosTrabajadores$ = (datos: any): Observable<any> =>
-    this.http.post(this.myAppUrl + this.myApiUrl + '/obtenerContratosTrabajadores', datos);
-  public crea_edita_Trabajadores$ = (datos: any): Observable<any> =>
-    this.http.post(this.myAppUrl + this.myApiUrl + '/creaeditaPersTrab', datos);
-  public elimina_Trabajadores$ = (datos: any): Observable<any> =>
-    this.http.put(this.myAppUrl + this.myApiUrl + '/eliminaPersTrab', datos);
+    public crea_Trabajador(datos: any): Promise<any> {
+        return this.firestore.collection(this.coleccion).add(datos);
+    }
+
+    public editar_Trabajador(id: string, datos: any) {
+        return this.firestore.collection(this.coleccion).doc(id).update(datos);
+    }
 }

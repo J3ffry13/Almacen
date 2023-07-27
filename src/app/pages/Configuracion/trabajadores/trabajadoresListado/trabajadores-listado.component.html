@@ -1,5 +1,8 @@
-<div *ngIf="loading">
-  <!-- <app-loader></app-loader> -->
+<div *ngIf="loading" class="vh-100 row justify-content-center align-items-center">
+  <div class="text-center">
+    <div class="spinner-border text-primary" role="status">
+    </div>
+  </div>
 </div>
 <div *ngIf="!loading">
   <div class="content-header">
@@ -65,7 +68,7 @@
                   <mat-icon>search</mat-icon>
                   Buscar</button>
                 &nbsp;
-                <button mat-raised-button color="primary" matTooltip="Nuevo Trabajador" (click)="nuevo()">
+                <button mat-raised-button color="primary" matTooltip="Nuevo" (click)="nuevo()">
                   <mat-icon>add_circle</mat-icon>
                   Nuevo</button>
               </div>

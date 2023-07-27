@@ -5,7 +5,6 @@ import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import {AppRoutingModule} from '@/app-routing.module';
 import {AppComponent} from './app.component';
 import {MainComponent} from '@modules/main/main.component';
-import {LoginComponent} from '@modules/login/login.component';
 import {HeaderComponent} from '@modules/main/header/header.component';
 import {FooterComponent} from '@modules/main/footer/footer.component';
 import {MenuSidebarComponent} from '@modules/main/menu-sidebar/menu-sidebar.component';
@@ -58,8 +57,6 @@ import {ConfirmActionComponent} from './components/crud/confirm-action/confirm-a
 import {SnackbarComponent} from './components/crud/snackbar/snackbar.component';
 import {LoaderComponent} from './components/crud/loader/loader.component';
 import {environment} from 'environments/environment';
-import {TrabajadoresListadoComponent} from '@pages/Configuracion/trabajadores/trabajadoresListado/trabajadores-listado.component';
-import {TrabajadoresRegistroComponent} from '@pages/Configuracion/trabajadores/trabajadoresRegistro/trabajadores-registro.component';
 import {initializeApp, provideFirebaseApp} from '@angular/fire/app';
 import {provideStorage} from '@angular/fire/storage';
 
@@ -78,7 +75,6 @@ import {
 import {MY_FORMATS_DDMMYYY} from './utils/format-datepicker';
 import {MatSortModule} from '@angular/material/sort';
 import {MatTreeModule} from '@angular/material/tree';
-import {RegistroAsistenciaRegistroComponent} from '@pages/Control-Asistencias/registroAsistencia/registroAsistencia-registro.component';
 import {AsignacionLaboresListadoComponent} from '@pages/Procesos/asignacionLabores/asignacionLabores-listado/asignacionLabores-listado.component';
 import {AsignacionLaboresRegistroComponent} from '@pages/Procesos/asignacionLabores/asignacionLabores-registro/asignacionLabores-registro.component';
 import {IngresosListadoComponent} from '@pages/Finanzas/Ingresos/ingresos-listado/ingresos-listado.component';
@@ -98,7 +94,6 @@ import {PerfilWebRegistroComponent} from '@pages/Seguridad/perfilWeb/perfil-web-
 import {UsuariosListadoComponent} from './pages/Seguridad/usuarios/usuarios-listado/usuarios-listado.component';
 import {UsuariosRegistroComponent} from './pages/Seguridad/usuarios/usuarios-registro/usuarios-registro.component';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { TrabajadorContratoComponent } from '@pages/Configuracion/trabajadores/trabajadorContrato/trabajador-contrato.component';
 
 defineCustomElements();
 registerLocaleData(localeEn, 'es-ES');
@@ -129,11 +124,8 @@ registerLocaleData(localeEn, 'es-ES');
         SnackbarComponent,
         LoaderComponent,
         DashboardComponent,
-        TrabajadoresRegistroComponent,
-        TrabajadorContratoComponent,
         AsignacionLaboresListadoComponent,
         AsignacionLaboresRegistroComponent,
-        RegistroAsistenciaRegistroComponent,
         IngresosListadoComponent,
         IngresosRegistroComponent,
         EgresosListadoComponent,

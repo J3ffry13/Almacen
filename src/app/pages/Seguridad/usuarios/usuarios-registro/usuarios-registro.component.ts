@@ -57,17 +57,17 @@ export class UsuariosRegistroComponent implements OnInit, AfterViewInit {
 
     ngAfterViewInit(): void {
         this.loading = true;
-        this.utilsService.listadoCombos$({opcion: 3}).subscribe(
-            (result) => {
-                this.listPerfilesWebCbo = result[0];
-                this.listPersonasCbo = result[1];
-                this.registroForm.controls['dni'].setValue(this.registro.dni);
-            },
-            (error) => {
-                console.log(error);
-            }
-        );
-        this.loading = false;
+        // this.utilsService.listadoCombos$({opcion: 3}).subscribe(
+        //     (result) => {
+        //         this.listPerfilesWebCbo = result[0];
+        //         this.listPersonasCbo = result[1];
+        //         this.registroForm.controls['dni'].setValue(this.registro.dni);
+        //     },
+        //     (error) => {
+        //         console.log(error);
+        //     }
+        // );
+        // this.loading = false;
     }
 
     createForm() {

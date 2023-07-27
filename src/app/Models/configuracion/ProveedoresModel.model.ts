@@ -9,7 +9,6 @@ export class ProveedoresModel {
     login_cr: string;
     dt_up: Date;
     login_up: string;
-    accion: number;
 
     clean() {
         this.idProveedor = '';
@@ -20,6 +19,5 @@ export class ProveedoresModel {
         this.status = true;
         this.login_cr = '';
         this.login_up = '';
-        this.accion = 0;
     }
 }

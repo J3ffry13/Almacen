@@ -63,20 +63,20 @@ export class AsignacionLaboresRegistroComponent
 
     ngAfterViewInit(): void {
         this.loading = true;
-        this.utilsService.listadoCombos$({opcion: 2}).subscribe(
-            (result) => {
-                this.listActividadesCbo = result[0];
-                this.listGrupoTrabCbo = result[1];
-                this.loading = false;
-                setTimeout(() => {
-                    this.cargarMapa();
-                }, 0);
-            },
-            (error) => {
-                console.log(error);
-                this.loading = false;
-            }
-        );
+        // this.utilsService.listadoCombos$({opcion: 2}).subscribe(
+        //     (result) => {
+        //         this.listActividadesCbo = result[0];
+        //         this.listGrupoTrabCbo = result[1];
+        //         this.loading = false;
+        //         setTimeout(() => {
+        //             this.cargarMapa();
+        //         }, 0);
+        //     },
+        //     (error) => {
+        //         console.log(error);
+        //         this.loading = false;
+        //     }
+        // );
     }
 
     createForm() {

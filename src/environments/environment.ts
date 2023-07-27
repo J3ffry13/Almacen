@@ -13,5 +13,9 @@ export const environment = {
         collectTrabajadores: 'Trabajadores',
         collectProductos: 'Productos',
         collectProveedores: 'Proveedores',
+        
+
+
+        collectListCombos: 'List-Combos',
     }
 };

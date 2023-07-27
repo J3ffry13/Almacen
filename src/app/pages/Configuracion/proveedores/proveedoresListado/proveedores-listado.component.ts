@@ -86,7 +86,6 @@ export class ProveedoresListadoComponent implements OnInit {
         registroDatos.clean();
         registroDatos = registro;
         registroDatos.status = false;
-        registroDatos.status = false;
         registroDatos.login_up = this.user.email;
 
         const dialogRef = this.dialog.open(ConfirmActionComponent, {

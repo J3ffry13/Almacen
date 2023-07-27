@@ -1,34 +1,28 @@
 export class TrabajadorModel {
-    idTrabajador: number;
-    idPersona: number;
-    tipoID: number;
-    tipo: string;
-    f_inicio: string;
-    f_fin: string;
-    urlFire: string;
-    urlDocumento: string;
-    urlDocumentoAnterior: string;
-    file: any;
-    accion: number;
-    estado: number;
+    idTrabajador: string;
+    tipoDocu: number;
+    tipoCon: number;
+    dni: string;
+    nombres: string;
+    apellidos: string;
+    f_nacimiento: string;
+    urlImagen: string;
+    urlImagenAnterior: string;
     status: boolean;
-    login: string;
-    host: string;
-    isEdit: boolean;
+    dt_cr: Date;
+    login_cr: string;
+    dt_up: Date;
+    login_up: string;
 
     clean() {
-        this.idTrabajador = 0;
-        this.idPersona = 0;
-        this.tipoID = 0;
-        this.tipo = '';
-        this.f_inicio = '';
-        this.f_fin = '';
-        this.urlFire = '';
-        this.urlDocumento = '';
-        this.urlDocumentoAnterior = '';
-        this.estado = 0;
-        this.status = true;
-        this.accion = 0;
-        this.isEdit = false;
+        this.idTrabajador = '';
+        this.tipoDocu = -1;
+        this.tipoCon = -1;
+        this.dni = '';
+        this.nombres = '';
+        this.urlImagenAnterior = '';
+        this.apellidos = '';
+        this.f_nacimiento = '';
+        this.urlImagen = null;
     }
 }
